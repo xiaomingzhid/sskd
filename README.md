@@ -3,7 +3,8 @@
 ## Introduction
 
 SSKD is implemented based on **FastReID v1.0.0**, it provides a semi-supervised feature learning framework to learn domain-general representations. The framework is shown in 
-<img src="images/framework.png" width="800" >
+
+<img src="images/framework.png" width="850" >
 
 ## Dataset
 
