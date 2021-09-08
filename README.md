@@ -9,7 +9,7 @@ SSKD is implemented based on **FastReID v1.0.0**, it provides a semi-supervised 
 ## Dataset
 
 **FastHuman** is very challenging, as it contains more complex application scenarios and large-scale training, testing datasets. It has diverse images from different application scenarios including campus, airport, shopping mall, street, and railway station.
-It contains 447,233 labeled images of 40,061 subjects captured by 82 cameras.
+It contains 447,233 labeled images of 40,061 subjects captured by 82 cameras. The details of FastHuman, you can refer to [paper](https://arxiv.org/pdf/2108.05045.pdf).
 
 | Source Domain |  \#subjects | \#images | \#cameras | collection place |
 | ----- | :------: | :---------: | :----: | :------: |
