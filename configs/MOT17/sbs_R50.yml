@@ -1,0 +1,7 @@
+_BASE_: ../Base-SBS.yml
+
+DATASETS:
+  NAMES: ("MOT17",)
+  TESTS: ("Market1501",)
+
+OUTPUT_DIR: logs/MOT17/sbs_R50

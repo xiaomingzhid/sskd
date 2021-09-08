@@ -1,0 +1,7 @@
+_BASE_: ../Base-SBS.yml
+
+DATASETS:
+  NAMES: ("PRW",)
+  TESTS: ("Market1501",)
+
+OUTPUT_DIR: logs/PRW/sbs_R50

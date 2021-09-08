@@ -1,0 +1,11 @@
+_BASE_: "Base-cnn.yml"
+
+MODEL:
+  META_ARCHITECTURE: Distiller
+  BACKBONE:
+    NAME: build_resnet_backbone_distill
+    DEPTH: 34x
+    FEAT_DIM: 512
+    WITH_IBN: False
+    PRETRAIN: True
+  WEIGHTS: projects/Basic_Project/basemodel/r34/model_best.pth

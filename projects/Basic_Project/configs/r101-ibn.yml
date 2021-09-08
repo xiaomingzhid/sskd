@@ -1,0 +1,11 @@
+_BASE_: Base-cnn.yml
+
+MODEL:
+  BACKBONE:
+    DEPTH: 101x
+    FEAT_DIM: 2048
+    WITH_IBN: True
+    PRETRAIN: True
+    PRETRAIN_PATH: /home/helingxiao3/.cache/torch/checkpoints/resnet50_ibn_a-d9d0bb7b.pth
+
+OUTPUT_DIR: projects/Basic_Project/basemodel/r101

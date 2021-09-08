@@ -1,0 +1,15 @@
+_BASE_: "Base-sbs-kd.yml"
+
+MODEL:
+  BACKBONE:
+    DEPTH: 34x
+    FEAT_DIM: 512
+    WITH_IBN: True
+    PRETRAIN: False
+  WEIGHTS: projects/Basic_Project/basemodel/r34/model_best.pth
+
+KD:
+  MODEL_CONFIG: "projects/Basic_Project/basemodel/r34/config.yaml"
+  MODEL_WEIGHTS: "projects/Basic_Project/basemodel/r34/model_best.pth"
+
+OUTPUT_DIR: projects/SSKD/logs/distiller_r34_34
