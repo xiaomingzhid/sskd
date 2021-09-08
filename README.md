@@ -59,7 +59,10 @@ python3 projects/Basic_Project/train_net.py --config-file projects/Basic_Project
 ```bash
 python3 projects/SSKD/train_net.py --config-file projects/SSKD/configs/sskd.yml --num-gpu 4
 ```
-Some experimental results you could find in our [arxiv paper](https://arxiv.org/pdf/2108.05045.pdf).
+### Results
+<img src="images/result1.png" width="550" >
+<img src="images/result2.png" width="500" >
+Other some experimental results you could find in our [arxiv paper](https://arxiv.org/pdf/2108.05045.pdf).
 
 ## Reference Project
 - [fastreid](https://github.com/JDAI-CV/fast-reid)
