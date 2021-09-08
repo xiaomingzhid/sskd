@@ -1,49 +1,71 @@
-<img src=".github/FastReID-Logo.png" width="300" >
+# Semi-Supervised Domain Generalizable Person Re-Identification (SSKD)
 
-FastReID is a research platform that implements state-of-the-art re-identification algorithms. It is a groud-up rewrite of the previous version, [reid strong baseline](https://github.com/michuanhaohao/reid-strong-baseline).
+## Introduction
 
-## What's New
+SSKD is implemented based on **FastReID v1.0.0**, it provides a semi-supervised feature learning framework to learn domain-general representations. The framework is shown in 
+<img src="images/framework.png" width="300" >
 
-- [Oct 2020] Added the [Hyper-Parameter Optimization](https://github.com/JDAI-CV/fast-reid/tree/master/projects/HPOReID) based on fastreid. See `projects/HPOReID`.
-- [Sep 2020] Added the [person attribute recognition](https://github.com/JDAI-CV/fast-reid/tree/master/projects/attribute_recognition) based on fastreid. See `projects/attribute_recognition`.
-- [Sep 2020] Automatic Mixed Precision training is supported with pytorch1.6 built-in `torch.cuda.amp`. Set `cfg.SOLVER.AMP_ENABLED=True` to switch it on.
-- [Aug 2020] [Model Distillation](https://github.com/JDAI-CV/fast-reid/tree/master/projects/DistillReID) is supported, thanks for [guan'an wang](https://github.com/wangguanan)'s contribution.
-- [Aug 2020] ONNX/TensorRT converter is supported.
-- [Jul 2020] Distributed training with multiple GPUs, it trains much faster.
-- [Jul 2020] `MAX_ITER` in config means `epoch`, it will auto scale to maximum iterations.
-- Includes more features such as circle loss, abundant visualization methods and evaluation metrics, SoTA results on conventional, cross-domain, partial and vehicle re-id, testing on multi-datasets simultaneously, etc.
-- Can be used as a library to support [different projects](https://github.com/JDAI-CV/fast-reid/tree/master/projects) on top of it. We'll open source more research projects in this way.
-- Remove [ignite](https://github.com/pytorch/ignite)(a high-level library) dependency and powered by [PyTorch](https://pytorch.org/).
+## Dataset
 
-We write a [chinese blog](https://l1aoxingyu.github.io/blogpages/reid/2020/05/29/fastreid.html) about this toolbox.
+**FastHuman** is very challenging, as it contains more complex application scenarios and large-scale training, testing datasets. It has diverse images from different application scenarios including campus, airport, shopping mall, street, and railway station.
+It contains 447,233 labeled images of 40,061 subjects captured by 82 cameras.
 
-## Installation
+| Source Domain |  \#subjects | \#images | \#cameras | collection place |
+| ----- | :------: | :---------: | :----: | :------: |
+| CUHK03|  1,090 | 14,096 | 2 | campus |  
+| SAIVT | 152   | 7,150  | 8 | buildings |
+| AirportALERT | 9,651 | 30,243 | 6 | airport |
+|iLIDS|  300   | 4,515  | 2 | airport |
+|PKU  |  114   | 1,824  | 2 | campus |
+|PRAI |   1,580 | 39,481| 2 | aerial imagery |
+|SenseReID | 1,718 | 3,338  | 2 | unknown |
+|SYSU | 510  | 30,071 | 4 | campus |
+|Thermalworld | 409   | 8,103  | 1 | unknown |
+|3DPeS  | 193  | 1,012  | 1 | outdoor  |
+|CAVIARa | 72  | 1,220  | 1 | shopping mall |
+|VIPeR | 632   | 1,264  | 2 | unknown |
+|Shinpuhkan| 24 | 4,501  | 8 | unknown |
+|WildTrack | 313 | 33,979 | 7| outdoor |
+|cuhk-sysu | 11,934| 34,574 | 1| street |
+|LPW |  2,731 | 30,678 | 4 | street |
+|GRID |  1,025 | 1,275 | 8 | underground |
+|Total | 31,423| 246,049 | 57 | - |
 
-See [INSTALL.md](https://github.com/JDAI-CV/fast-reid/blob/master/docs/INSTALL.md).
 
-## Quick Start
+|Unseen Domain|  \#subjects | \#images | \#cameras | collection place  |
+| ----- | :------: | :---------: | :----: | :------: |
+|Market1501 | 1,501  | 32,217 | 6 | campus |
+|DukeMTMC | 1,812 | 36,441 | 8 | campus |
+|MSMT17 | 4,101 | 126,441| 15| campus |
+|PartialREID | 60 | 600| 6|campus |
+|PartialiLIDS | 119  | 238 | 2 | airport |
+|OccludedREID | 200  | 2,000| 5| campus |
+|CrowdREID | 845  | 3,257 | 11 | railway station| 
+|Total   | 8,638  | 201,184| 49 | - |
 
-The designed architecture follows this guide [PyTorch-Project-Template](https://github.com/L1aoXingyu/PyTorch-Project-Template), you can check each folder's purpose by yourself.
+**YouTube-Human** is a unlabeled human dataset. You can download the Street-View video from YouTube website, and the use the human detection algorithm ([centerX](https://github.com/JDAI-CV/centerX)) to obtain the human images.
 
-See [GETTING_STARTED.md](https://github.com/JDAI-CV/fast-reid/blob/master/docs/GETTING_STARTED.md).
+## Training & Evaluation
 
-Learn more at out [documentation](). And see [projects/](https://github.com/JDAI-CV/fast-reid/tree/master/projects) for some projects that are build on top of fastreid.
+The whole training process is divided into two stages:
 
-## Model Zoo and Baselines
+- Train a student model (r34-ibn) and a teacher model (r101_ibn), you can run:
+```bash
+python3 projects/Basic_Project/train_net.py --config-file projects/Basic_Project/configs/r34-ibn.yml --num-gpu 4
+python3 projects/Basic_Project/train_net.py --config-file projects/Basic_Project/configs/r101-ibn.yml --num-gpu 4
+```
+- Train the student model based unlabeled dataset and sskd, you can run:
+```bash
+python3 projects/SSKD/train_net.py --config-file projects/SSKD/configs/sskd.yml --num-gpu 4
+```
+Some experimental results you could find in our [arxiv paper](https://arxiv.org/pdf/2108.05045.pdf).
 
-We provide a large set of baseline results and trained models available for download in the [fastreid Model Zoo](https://github.com/JDAI-CV/fast-reid/blob/master/docs/MODEL_ZOO.md).
+## Reference Project
+- [fastreid](https://github.com/JDAI-CV/fast-reid)
+- [centerX](https://github.com/JDAI-CV/centerX)
 
-## Deployment
-
-We provide some examples and scripts to convert fastreid model to Caffe, ONNX and TensorRT format in [fastreid deploy](https://github.com/JDAI-CV/fast-reid/blob/master/tools/deploy).
-
-## License
-
-Fastreid is released under the [Apache 2.0 license](https://github.com/JDAI-CV/fast-reid/blob/master/LICENSE).
-
-## Citing FastReID
-
-If you use Fastreid in your research or wish to refer to the baseline results published in the Model Zoo, please use the following BibTeX entry.
+## Citation
+If you use **fastreid** or **sskd** in your research, please give credit to the following papers:
 
 ```BibTeX
 @article{he2020fastreid,
@@ -51,5 +73,13 @@ If you use Fastreid in your research or wish to refer to the baseline results pu
   author={He, Lingxiao and Liao, Xingyu and Liu, Wu and Liu, Xinchen and Cheng, Peng and Mei, Tao},
   journal={arXiv preprint arXiv:2006.02631},
   year={2020}
+}
+```
+```BibTeX
+@article{he2021semi,
+  title={Semi-Supervised Domain Generalizable Person Re-Identification},
+  author={He, Lingxiao and Liu, Wu and Liang, Jian and Zheng, Kecheng and Liao, Xingyu and Cheng, Peng and Mei, Tao},
+  journal={arXiv preprint arXiv:2108.05045},
+  year={2021}
 }
 ```
